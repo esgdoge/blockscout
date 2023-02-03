@@ -8,7 +8,7 @@ services:
     container_name: redis_db
     command: redis-server
     volumes:
-      - ./redis-data:/data
+      - /data/blockscout/redis-data:/data
 
   db:
     image: postgres:14
@@ -20,6 +20,8 @@ services:
         POSTGRES_HOST_AUTH_METHOD: 'trust'
     ports:
       - 7432:5432
+    volumes:
+      - /data/blockscout/postgres-data:/var/lib/postgresql/data
 
   blockscout:
     platform: linux/x86_64
@@ -53,9 +55,9 @@ services:
     env_file:
       -  ./envs/common-blockscout.env
     ports:
-      - 4000:4000
+      - 9999:4000
     volumes:
-      - ./logs/:/app/logs/
+      - /data/blockscout/logs/:/app/logs/
 
   smart-contract-verifier:
     platform: linux/x86_64
